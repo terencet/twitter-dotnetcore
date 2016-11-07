@@ -31,7 +31,7 @@ namespace ClassLibrary
       public void Queue(Post post)
       {
         if(post == null)
-            throw new ArgumentNullException("post");
+          throw new ArgumentNullException("post");
 
         queue.Enqueue(post);
       }
@@ -53,6 +53,9 @@ namespace ClassLibrary
 
       public void Add(Tweet tweet)
       {
+        if(tweet == null)
+          throw new ArgumentNullException("tweet");
+
         Tweets.Add(tweet);
       }
 
