@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using ClassLibrary;
 
 namespace Worker
 {
@@ -60,12 +61,6 @@ namespace Worker
       }
     }
 
-    public class Post
-    {
-      // this is a comma seperate value of author, message
-      public string Content {get; set;}
-    }
-
     public class MessageFeed
     {
       public IList<Tweet> Tweets {get; set;}
@@ -80,11 +75,5 @@ namespace Worker
         Tweets.Add(tweet);
       }
 
-    }
-
-    public class Tweet
-    {
-      public string Message {get; set;}
-      public string Author {get; set;}
     }
 }

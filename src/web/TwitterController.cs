@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using ClassLibrary;
 
 namespace Web
 {
@@ -21,15 +22,4 @@ namespace Web
     }
   }
 
-  public class Post
-  {
-    // this is a comma seperate value of author, message
-    public string Content {get; set;}
-  }
-
-  public class Tweet
-  {
-    public string Message {get; set;}
-    public string Author {get; set;}
-  }
 }
