@@ -14,7 +14,7 @@ Create Solution and Project Folders
  2. Clone `git@github.com:PageUpPeopleOrg/twitter-donetcore.git`
  3. `cd twitter-dotnetcore`
 
-Create lib Project
+Part 1: Create lib Project
 -------------
 
  1. Navigate to your lib project folder  `cd lib` 
@@ -96,7 +96,7 @@ namespace ClassLibrary
 ```
 
 
-Create Web Project
+Part 2: Create Web Project
 -------------
 
  1. Navigate to your web project folder  `cd web`.
@@ -221,7 +221,7 @@ namespace ConsoleApplication
  11. Test it by running `curl -i http://localhost:5000/api/twitter`.
 
 
-Create Worker Project
+Part 3: Create Worker Project
 -------------
 
  1. `cd worker`.
@@ -284,7 +284,7 @@ namespace Worker
  6. Run `dotnet build` to compile (optional).
  7. Run `dotnet run` to start the worker service.
 
-Create Test Project
+Part 4: Create Test Project
 -------------
 
  1. Navigate to your test folder `cd test`.
