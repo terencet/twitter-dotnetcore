@@ -25,73 +25,71 @@ Part 1: Create lib Project
 ```
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 
 namespace ClassLibrary
 {
     public class Post
     {
-      // this is a comma seperate value of author, message
-      public string Content {get; set;}
+        // this is a comma separated value of author, message
+        public string Content { get; set; }
     }
 
     public class Tweet
     {
-      public string Message {get; set;}
-      public string Author {get; set;}
+        public string Message { get; set; }
+        public string Author { get; set; }
     }
 
 
     public class MessageStream
     {
-      private Queue<Post> queue;
-      public MessageStream()
-      {
-        queue = new Queue<Post>();
-      }
+        private readonly Queue<Post> queue;
+
+        public MessageStream()
+        {
+            queue = new Queue<Post>();
+        }
 
 
-      public bool HasPosts { get { return queue.Any(); }}
+        public bool HasPosts { get { return queue.Any(); } }
 
 
-      public void Queue(Post post)
-      {
-        if(post == null)
-          throw new ArgumentNullException("post");
+        public void Queue(Post post)
+        {
+            if (post == null)
+                throw new ArgumentNullException(nameof(post));
+
+            queue.Enqueue(post);
+        }
 
 
-        queue.Enqueue(post);
-      }
-
-
-      public Post Pop()
-      {
-        return queue.Dequeue();
-      }
+        public Post Pop()
+        {
+            return queue.Dequeue();
+        }
     }
 
 
     public class MessageFeed
     {
-      public IList<Tweet> Tweets {get; set;}
+        public IList<Tweet> Tweets { get; set; }
 
 
-      public MessageFeed()
-      {
-        Tweets = new List<Tweet>();
-      }
+        public MessageFeed()
+        {
+            Tweets = new List<Tweet>();
+        }
+
+        public void Add(Tweet tweet)
+        {
+            if (tweet == null)
+                throw new ArgumentNullException("tweet");
 
 
-      public void Add(Tweet tweet)
-      {
-        if(tweet == null)
-          throw new ArgumentNullException("tweet");
-
-
-        Tweets.Add(tweet);
-      }
-    }    
+            Tweets.Add(tweet);
+        }
+    }
 }
 ```
 
@@ -132,24 +130,24 @@ Part 2: Create Web Project
  
  ```
  using System;
-	using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
-	namespace ConsoleApplication
-	{
- 	   public class Program
-    		{
-   	     		public static void Main(string[] args)
-   	     		{
-		           var host = new WebHostBuilder()
-		               .UseKestrel()
-		               .UseStartup<Startup>()
-		               .Build();
-	
-		           host.Run();
-		     }
-    		}
-	}
-	```
+namespace ConsoleApplication
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
+    }
+}
+```
 
  5. Add *Startup.cs* to register and initialize WebApi framework.
 
@@ -186,35 +184,36 @@ using ClassLibrary;
 
 namespace ConsoleApplication
 {
-  [Route("api/[controller]")]
-  public class TwitterController: Controller
-  {
-    [HttpGet]
-    public IEnumerable<Tweet> Get()
+    [Route("api/[controller]")]
+    public class TwitterController : Controller
     {
-       return new List<Tweet>{ new Tweet
-       {
-         Author = "John",
-         Message = "Hi"
-       }};
-    }
+        [HttpGet]
+        public IEnumerable<Tweet> Get()
+        {
+            return new List<Tweet>{ new Tweet
+            {
+                Author = "John",
+                Message = "Hi"
+            }};
+        }
 
 
-    public void Post(Post post)
-    {
+        public void Post(Post post)
+        {
+        }
     }
-  }
 }
 ```
  7. Add reference to your lib project. Copy paste the highlighted line into your *project.json* in web.
 ```
-  "dependencies": {
+"dependencies": {
     "lib": "*",
       "Microsoft.AspNetCore.Mvc": "1.0.0",
       "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
       "Microsoft.Extensions.DependencyInjection": "1.0.0"
-   },
-   ```
+    },
+...
+```
  8. Run `dotnet restore` on lib and web to restore NuGet packages. Alternatively you can run `dotnet restore` on the parent folder.
  9. Run `dotnet build` to compile (optional).
  10. Run `dotnet run` to start web server.
@@ -229,9 +228,8 @@ Part 3: Create Worker Project
  3. Add the following to *Program.cs*.
  
 ```
- using System;
-	using ClassLibrary;
-
+using System;
+using ClassLibrary;
 
 namespace Worker
 {
@@ -243,18 +241,19 @@ namespace Worker
             var messageFeed = new MessageFeed();
 
 
-            while(messageStream.HasPosts)
+            while (messageStream.HasPosts)
             {
-               var post = messageStream.Pop();
-               if (post != null)
-               {
-                 var contentArray = post.Content.Split(',');
-                 messageFeed.Add(new Tweet{
-                    Author = contentArray[0],
-                    Message = contentArray[1]
-                  });
-                  Console.WriteLine($"Processed Message {contentArray[0]}, {contentArray[1]}");
-               }
+                var post = messageStream.Pop();
+                if (post != null)
+                {
+                    var contentArray = post.Content.Split(',');
+                    messageFeed.Add(new Tweet
+                    {
+                        Author = contentArray[0],
+                        Message = contentArray[1]
+                    });
+                    Console.WriteLine($"Processed Message {contentArray[0]}, {contentArray[1]}");
+                }
             }
             Console.Read();
         }
@@ -265,7 +264,7 @@ namespace Worker
             var messageStream = new MessageStream();
             messageStream.Queue(new Post
             {
-              Content = "John, This is the first tweet"
+                Content = "John, This is the first tweet"
             });
             return messageStream;
         }
