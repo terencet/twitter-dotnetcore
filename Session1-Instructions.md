@@ -2,7 +2,7 @@ Autonomous service workshop - Session 1: dotnet core hands on
 ===================
 
 
-Please follow the steps in this worksheet to create a dotnet core project.
+Please follow the steps below to create your twitter service.
 
 ----------
 
