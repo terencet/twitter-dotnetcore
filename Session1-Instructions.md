@@ -152,7 +152,9 @@ Create Web Project
 	```
 
  5. Add *Startup.cs* to register and initialize WebApi framework.
-```using Microsoft.AspNetCore.Builder;
+
+```
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -205,7 +207,7 @@ namespace ConsoleApplication
 }
 ```
  7. Add reference to your lib project. Copy paste the highlighted line into your *project.json* in web.
- ```
+```
   "dependencies": {
     "lib": "*",
       "Microsoft.AspNetCore.Mvc": "1.0.0",
@@ -226,7 +228,6 @@ Create Worker Project
  2. Run `dotnet new` to create a new dotnet core project.
  3. Add the following to *Program.cs*.
  
-
 ```
  using System;
 	using ClassLibrary;
@@ -277,7 +278,8 @@ namespace Worker
   "dependencies": {
     "lib": "*"
        },
-       ```
+```
+ 
  5. Run `dotnet restore` to restore NuGet packages.
  6. Run `dotnet build` to compile (optional).
  7. Run `dotnet run` to start the worker service.
