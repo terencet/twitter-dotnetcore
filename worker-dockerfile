@@ -1,0 +1,15 @@
+FROM microsoft/dotnet:1.0.0-preview2-sdk
+
+COPY . /app
+
+#Build lib project
+WORKDIR /app/lib
+RUN ["dotnet", "restore"]
+RUN ["dotnet", "build"]
+
+#Build the worker project
+WORKDIR /app/worker
+RUN ["dotnet", "restore"]
+RUN ["dotnet", "build"]
+
+ENTRYPOINT ["dotnet", "run"]
