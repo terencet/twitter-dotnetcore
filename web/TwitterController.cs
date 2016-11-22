@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
 namespace Web
 {
