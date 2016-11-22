@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using CachingFramework.Redis;
 using System.Linq;
 using System.Net;
+using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.EnvironmentVariables;
 
 namespace Web
 {
     [Route("api/[controller]")]
     public class TwitterController : Controller
     {
-
+        private IConfiguration configuration;
+        public TwitterController(IConfigurationRoot configuration)
+        {
+            this.configuration = configuration; 
+        }
         [HttpGet]
         public IEnumerable<Tweet> Get()
         {
@@ -20,15 +27,19 @@ namespace Web
             return tweets.ToArray();
         }
 
+        [HttpPost]
         public void Post(Post post)
         {
             var context = GetContext();
             context.PubSub.Publish<Post>("posts", post);
         }
 
-        public static Context GetContext()
+        public Context GetContext()
         {
-            IPHostEntry ip = Dns.GetHostEntryAsync("redis").Result;
+            var redisHost = configuration["REDIS_HOST"];
+            IPHostEntry ip = Dns.GetHostEntryAsync(redisHost).Result;
+
+            Console.WriteLine($"{ip.AddressList.First()} is ipaddress being used");
 
             return new Context($"{ip.AddressList.First()}:6379");
         }

@@ -10,6 +10,7 @@ namespace Web
            var host = new WebHostBuilder()
                .UseKestrel()
                .UseStartup<Startup>()
+               .UseUrls("http://*:4000")
                .Build();
 
            host.Run();

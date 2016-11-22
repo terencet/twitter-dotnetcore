@@ -1,8 +1,8 @@
 ﻿using System;
 using CachingFramework.Redis;
-using StackExchange.Redis;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace Worker
 {
@@ -10,7 +10,11 @@ namespace Worker
     {
         public static void Main(string[] args)
         {
-            var context = GetContext();
+            var config = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+
+            var context = GetContext(config);
             var tweets = context.Collections.GetRedisList<Tweet>("tweets");
 
             Console.WriteLine("Worker starting to listen to posts");
@@ -32,9 +36,12 @@ namespace Worker
             System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
         }
 
-        public static Context GetContext()
+        public static Context GetContext(IConfigurationRoot config)
         {
-            IPHostEntry ip = Dns.GetHostEntryAsync("redis").Result;
+            var redisHost = config["REDIS_HOST"];
+            IPHostEntry ip = Dns.GetHostEntryAsync(redisHost).Result;
+
+            Console.WriteLine($"{ip.AddressList.First()} is ipaddress being used");
 
             return new Context( $"{ip.AddressList.First()}:6379");
         }

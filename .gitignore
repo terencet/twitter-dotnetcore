@@ -244,3 +244,4 @@ Properties/launchSettings.json
 
 .DS_Store
 .vscode
+*.rdb

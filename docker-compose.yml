@@ -4,7 +4,9 @@
 web:
   build: web
   ports:
-    - "3000"
+    - "4000:4000"
+  environment: 
+    REDIS_HOST: redis
   links: 
     - redis
 #
@@ -12,6 +14,8 @@ web:
 #
 worker:
   build: worker
+  environment: 
+    REDIS_HOST: redis
   links: 
     - redis
 
