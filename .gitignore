@@ -240,3 +240,7 @@ _Pvt_Extensions
 .fake/
 
 Properties/launchSettings.json
+
+
+.DS_Store
+.vscode

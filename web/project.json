@@ -1,11 +1,11 @@
 {
+  "name": "web",
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
     "emitEntryPoint": true
   },
   "dependencies": {
-    "lib":"*"
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -16,7 +16,8 @@
         },
         "Microsoft.AspNetCore.Mvc": "1.0.0",
         "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-        "Microsoft.Extensions.DependencyInjection": "1.0.0"
+        "Microsoft.Extensions.DependencyInjection": "1.0.0",
+        "CachingFramework.Redis": "7.0.0"
       },
       "imports": "dnxcore50"
     }

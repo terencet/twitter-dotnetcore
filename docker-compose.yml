@@ -2,30 +2,21 @@
 # Twitter - webservice 
 #
 web:
-  build: .
-  dockerfile: web-dockerfile
+  build: web
   ports:
     - "3000"
-  extra_hosts:
-    - "api.pageuppeople.local:127.0.0.1"
-  environment:
-    AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-    AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-    AWS_SESSION_TOKEN: "${AWS_SESSION_TOKEN}"
-    ENV: "${ENV}"
-    DC: "${DC}"
-
+  links: 
+    - redis
 #
 # Twitter - workerservice
 #
 worker:
-  build: .
-  dockerfile: worker-dockerfile
-  environment:
-    AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-    AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-    AWS_SESSION_TOKEN: "${AWS_SESSION_TOKEN}"
-    ENV: "${ENV}"
-    DC: "${DC}"
+  build: worker
+  links: 
+    - redis
+
+# Redis
+redis:
+  image: redis
 
 

@@ -1,5 +1,8 @@
 ﻿using System;
-using ClassLibrary;
+using CachingFramework.Redis;
+using StackExchange.Redis;
+using System.Linq;
+using System.Net;
 
 namespace Worker
 {
@@ -7,33 +10,45 @@ namespace Worker
     {
         public static void Main(string[] args)
         {
-            var messageStream = InitializeMessageStream();
-            var messageFeed = new MessageFeed();
+            var context = GetContext();
+            var tweets = context.Collections.GetRedisList<Tweet>("tweets");
 
-            while(messageStream.HasPosts)
+            Console.WriteLine("Worker starting to listen to posts");
+
+            context.PubSub.Subscribe<Post>("posts", post =>
             {
-               var post = messageStream.Pop();
-               if (post != null)
-               {
-                 var contentArray = post.Content.Split(',');
-                 messageFeed.Add(new Tweet{
+
+                var contentArray = post.Content.Split(',');
+
+                tweets.Add(new Tweet()
+                {
                     Author = contentArray[0],
                     Message = contentArray[1]
-                  });
-                  Console.WriteLine($"Processed Message {contentArray[0]}, {contentArray[1]}");
-               }
-            }
-            Console.Read();
+                });
+                
+                Console.WriteLine($"Processed Message {contentArray[0]}, {contentArray[1]}");
+            });
+
+            System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
         }
 
-        public static MessageStream InitializeMessageStream()
+        public static Context GetContext()
         {
-            var messageStream = new MessageStream();
-            messageStream.Queue(new Post
-            {
-              Content = "Ceola,This is the first tweet"
-            });
-            return messageStream;
+            IPHostEntry ip = Dns.GetHostEntryAsync("redis").Result;
+
+            return new Context( $"{ip.AddressList.First()}:6379");
         }
+    }
+
+    public class Post
+    {
+        // this is a comma seperate value of author, message
+        public string Content { get; set; }
+    }
+
+    public class Tweet
+    {
+        public string Message { get; set; }
+        public string Author { get; set; }
     }
 }
