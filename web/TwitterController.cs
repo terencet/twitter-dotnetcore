@@ -12,7 +12,7 @@ namespace Web
     public class TwitterController : Controller
     {
         private IConfiguration configuration;
-        public TwitterController(IConfigurationRoot configuration)
+        public TwitterController(IConfiguration configuration)
         {
             this.configuration = configuration; 
         }
